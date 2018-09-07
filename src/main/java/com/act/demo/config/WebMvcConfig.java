@@ -1,0 +1,38 @@
+package com.act.demo.config;
+
+import com.act.demo.support.converter.StringToDateConverter;
+import com.act.demo.support.interceptor.SessionInterceptor;
+import com.act.demo.support.resolver.ListArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+import java.util.List;
+
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurationSupport {
+    @Autowired
+    SessionInterceptor sessionInterceptor;
+    @Autowired
+    StringToDateConverter stringToDateConverter;
+    @Autowired
+    ListArgumentResolver listArgumentResolver;
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sessionInterceptor);
+    }
+
+    @Override
+    protected void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(stringToDateConverter);
+    }
+
+    @Override
+    protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(listArgumentResolver);
+    }
+}

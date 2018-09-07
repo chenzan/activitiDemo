@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.act.demo.mapper.SysLeaveMapper">
+    <resultMap id="BaseResultMap" type="com.act.demo.domain.SysLeave">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="leave_day" jdbcType="VARCHAR" property="leaveDay"/>
+        <result column="leave_reason" jdbcType="VARCHAR" property="leaveReason"/>
+        <result column="leave_start_time" jdbcType="TIMESTAMP" property="leaveStartTime"/>
+        <result column="leave_end_time" jdbcType="TIMESTAMP" property="leaveEndTime"/>
+        <result column="state" jdbcType="SMALLINT" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, leave_day, leave_reason, leave_start_time, leave_end_time, state
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_leave
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_leave
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.act.demo.domain.SysLeave">
+    insert into sys_leave (id, user_id, leave_day,
+      leave_reason, leave_start_time, leave_end_time,
+      state)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{leaveDay,jdbcType=VARCHAR},
+      #{leaveReason,jdbcType=VARCHAR}, #{leaveStartTime,jdbcType=TIMESTAMP}, #{leaveEndTime,jdbcType=TIMESTAMP},
+      #{state,jdbcType=SMALLINT})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.act.demo.domain.SysLeave">
+        insert into sys_leave
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="leaveDay != null">
+                leave_day,
+            </if>
+            <if test="leaveReason != null">
+                leave_reason,
+            </if>
+            <if test="leaveStartTime != null">
+                leave_start_time,
+            </if>
+            <if test="leaveEndTime != null">
+                leave_end_time,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="leaveDay != null">
+                #{leaveDay,jdbcType=VARCHAR},
+            </if>
+            <if test="leaveReason != null">
+                #{leaveReason,jdbcType=VARCHAR},
+            </if>
+            <if test="leaveStartTime != null">
+                #{leaveStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="leaveEndTime != null">
+                #{leaveEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.act.demo.domain.SysLeave">
+        update sys_leave
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="leaveDay != null">
+                leave_day = #{leaveDay,jdbcType=VARCHAR},
+            </if>
+            <if test="leaveReason != null">
+                leave_reason = #{leaveReason,jdbcType=VARCHAR},
+            </if>
+            <if test="leaveStartTime != null">
+                leave_start_time = #{leaveStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="leaveEndTime != null">
+                leave_end_time = #{leaveEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.act.demo.domain.SysLeave">
+    update sys_leave
+    set user_id = #{userId,jdbcType=INTEGER},
+      leave_day = #{leaveDay,jdbcType=VARCHAR},
+      leave_reason = #{leaveReason,jdbcType=VARCHAR},
+      leave_start_time = #{leaveStartTime,jdbcType=TIMESTAMP},
+      leave_end_time = #{leaveEndTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from sys_leave
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select *
+        from sys_leave
+        where user_id = #{userId}
+    </select>
+</mapper>

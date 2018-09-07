@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>BPMN_2_0</ID>
+  <OriginalElement>flowPath=E:/companyJob/demo/actdemo/src/main/resources/activiti/simple.xml</OriginalElement>
+  <nodes>
+    <node x="10.0" y="84.0">interface com.intellij.jboss.jbpm.model.xml.bpmn20.TUserTask @52723</node>
+    <node x="22.0" y="168.0">interface com.intellij.jboss.jbpm.model.xml.bpmn20.TEndEvent @52728</node>
+    <node x="22.0" y="0.0">interface com.intellij.jboss.jbpm.model.xml.bpmn20.TStartEvent @52720</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="interface com.intellij.jboss.jbpm.model.xml.bpmn20.TUserTask @52723" target="interface com.intellij.jboss.jbpm.model.xml.bpmn20.TEndEvent @52728">
+      <point x="0.0" y="15.0" />
+      <point x="0.0" y="-15.0" />
+    </edge>
+    <edge source="interface com.intellij.jboss.jbpm.model.xml.bpmn20.TStartEvent @52720" target="interface com.intellij.jboss.jbpm.model.xml.bpmn20.TUserTask @52723">
+      <point x="0.0" y="15.0" />
+      <point x="0.0" y="-15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="50.0" y="99.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Details</Category>
+  </Categories>
+</Diagram>
+

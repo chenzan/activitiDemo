@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+<div>
+    ====================================================================================================
+    <div>
+        <form th:action="@{/leave/approval}">
+            <input hidden name="businessId" th:value="${sysLeave.id}"/>
+            <input hidden name="taskId" th:value="${taskId}"/>
+            请假人<input readonly name="username" th:value="${sysUser.username}"/><br/>
+            天数<input type="number" name="day" th:value="${sysLeave.leaveDay}"/><br/>
+            备注<input name="remark" th:value="${sysLeave.leaveReason}"/><br/>
+            意见<input name="comment"/><br/>
+        </form>
+        <div th:if="${#lists.size(comments)!=0}">
+            <table>
+                <caption>历史意见</caption>
+                <tr>
+                    <th>id</th>
+                    <th>处理人</th>
+                    <th>意见</th>
+                    <th>处理时间</th>
+                </tr>
+                <tr th:each="hisComment,comStat : ${comments}">
+
+                    <td th:text="${hisComment.id}"></td>
+                    <td th:text="${hisComment.userId}"></td>
+                    <td th:text="${hisComment.fullMessage}"></td>
+                    <td th:text="${#dates.format(hisComment.time,'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
