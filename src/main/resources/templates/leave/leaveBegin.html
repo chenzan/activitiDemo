@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link th:replace="/commons/common_css :: common_css">
+</head>
+<body>
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title">请假单填写</h4>
+    </div>
+    <form th:action="@{/leave/apply}" class="form-horizontal parsley-form">
+        <input hidden name="userId" th:value="${session.current_user.id}"/>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">请假人</label>
+            <div class="col-sm-5">
+                <input class="form-control" readonly name="username" th:value="${session.current_user.username}"/><br/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">天数</label>
+            <div class="col-sm-5">
+                <input min="0" class="form-control" type="number" name="day"/><br/>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">备注</label>
+            <div class="col-sm-5">
+                <input class="form-control" name="remark"/><br/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-5">
+                <input type="submit" class="btn btn-default" th:value="申请">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

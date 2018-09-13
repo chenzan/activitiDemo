@@ -4,18 +4,15 @@ import com.act.demo.domain.SysLeave;
 import com.act.demo.domain.SysUser;
 import com.act.demo.service.ILeaveService;
 import com.act.demo.service.IUserService;
-import com.act.demo.service.IWorkFlowService;
+import com.act.demo.service.IProcessService;
 import com.act.demo.support.BaseController;
 import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/leave")
@@ -25,17 +22,52 @@ public class LeaveController extends BaseController {
     @Resource
     IUserService userService;
     @Resource
-    IWorkFlowService workFlowService;
+    IProcessService processService;
+
+    /**
+     * 开始请假页面
+     *
+     * @return
+     */
+    @RequestMapping("/leaveBegin")
+    public String leaveBeginAction() {
+        return "leave/leaveBegin";
+    }
+
+    /**
+     * 当前任务
+     *
+     * @return
+     */
+    @RequestMapping("/currentTask")
+    public String currentTask(Map map) {
+        List<Task> tasks = leaveService.getPersonalLeaveTasks();
+        map.put("tasks", tasks);
+        return "leave/leaveTask";
+    }
+
+    /**
+     * 请假流程批注列表
+     *
+     * @return
+     */
+    @RequestMapping("/leaveLog")
+    public String leaveLogAction(Integer leaveId, Map map) {
+        List<Comment> comments = leaveService.selectLeaveLog(leaveId, map);
+        map.put("comments",comments);
+        return "leave/leaveLog";
+    }
 
     /**
      * 请假记录列表
      *
      * @return
      */
-    @RequestMapping("/leaveLog")
-    public String leaveListAction(Integer leaveId, Map map) {
-        List<Comment> comments = leaveService.selectLeaveLog(leaveId,map);
-        return "leave/leaveLog";
+    @RequestMapping("/leaveList")
+    public String leaveListAction(Map map) {
+        List<SysLeave> leaves = leaveService.getPersonalLeaves();
+        map.put("leaves", leaves);
+        return "leave/leaveList";
     }
 
     /**
@@ -57,7 +89,7 @@ public class LeaveController extends BaseController {
         sysLeave.setAssigneeName(username);
         sysLeave.setState(1);
         leaveService.applyLeave(sysLeave);
-        return "redirect:/main/index";
+        return "forward:/leaveList";
     }
 
     /**
@@ -79,15 +111,15 @@ public class LeaveController extends BaseController {
 
     @RequestMapping("/handlerLeave")
     public String handlerTask(String taskId, Map<String, Object> map) {
-        String businessId = workFlowService.getBusinessIdByTaskId(taskId);
-        List<String> outComNames = workFlowService.getOutComeLineListByTaskId(taskId);
+        String businessId = processService.getBusinessIdByTaskId(taskId);
+        List<String> outComNames = processService.getOutComeLineListByTaskId(taskId);
         SysLeave sysLeave = leaveService.selectByLeaveId(Integer.valueOf(businessId));
         SysUser sysUser = userService.selectByUserId(sysLeave.getUserId());
         map.put("taskId", taskId);
         map.put("transitionNames", outComNames);
         map.put("sysLeave", sysLeave);
         map.put("sysUser", sysUser);
-        List<Comment> commentByTaskId = workFlowService.getCommentByTaskId(taskId);
+        List<Comment> commentByTaskId = processService.getCommentByTaskId(taskId);
         map.put("comments", commentByTaskId);
         return "leave/leave";
     }

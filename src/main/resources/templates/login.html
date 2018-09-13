@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,6 +6,7 @@
     <title>login</title>
     <link rel="stylesheet" th:href="@{/css/login/style.css}" type="text/css">
     <link th:replace="/commons/common_css :: common_css">
+    <!--判断是否是最上层页面-->
     <script>
         if (top.window != window) {
             top.window.location.href = window.location.href;

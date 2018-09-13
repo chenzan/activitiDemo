@@ -1,13 +1,14 @@
 package com.act.demo.domain;
 
 import lombok.Data;
+import org.activiti.engine.task.Comment;
 
-import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class SysLeave {
-    @Email
+public class SysLeave implements Serializable {
     private Integer id;
 
     private Integer userId;
@@ -23,4 +24,6 @@ public class SysLeave {
     private Integer state;
 
     private String assigneeName;
+
+    private List<Comment> comments;
 }

@@ -2,6 +2,7 @@ package com.act.demo.service;
 
 import com.act.demo.domain.SysLeave;
 import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.Task;
 
 import java.util.List;
 import java.util.Map;
@@ -50,10 +51,23 @@ public interface ILeaveService {
     List<Comment> selectLeaveLog(Integer leaveId, Map map);
 
     /**
-     * 获取摸个请假记录
+     * 获取某个请假记录
      *
      * @param integer
      * @return
      */
     SysLeave selectByLeaveId(Integer integer);
+
+    /**
+     * 获取个人所有请假记录
+     * 和审批批注
+     */
+    List<SysLeave> getPersonalLeaves();
+
+    /**
+     * 获取我的当前请假任务
+     * @return
+     */
+    List<Task> getPersonalLeaveTasks();
+
 }

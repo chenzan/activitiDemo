@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link th:replace="/commons/common_css :: common_css">
+</head>
+<body>
+<div class="modal-header">
+    <h4 class="modal-title">个人任务</h4>
+</div>
+<table class="table table-bordered">
+    <tr>
+        <th>任务id</th>
+        <th>任务名称</th>
+        <th>办理人</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    <tr th:each="task,tStat : ${tasks}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.assignee}"></td>
+        <td th:text="${#dates.format(task.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td>
+            <a target="_blank" th:href="@{/leave/handlerLeave(taskId=${task.id})}">办理任务</a>
+            <a target="_blank" th:href="@{/process/curProcessImg(taskId=${task.id})}">查看当前流程</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

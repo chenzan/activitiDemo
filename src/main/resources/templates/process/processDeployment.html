@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link th:replace="/commons/common_css :: common_css">
+</head>
+<body>
+<div class="modal-header">
+    <h4 class="modal-title">部署管理</h4>
+</div>
+<table class="table table-bordered">
+    <tr>
+        <th>部署id</th>
+        <th>部署名称</th>
+        <th>部署时间</th>
+        <th>操作</th>
+    </tr>
+    <tr th:each="deployment,deployStat : ${deploymentProcess}">
+        <td th:text="${deployment.id}"></td>
+        <td th:text="${deployment.name}"></td>
+        <td th:text="${#dates.format(deployment.deploymentTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td>
+            <a th:onclick="'javascript:deploymentDel(\''+${deployment.id}+'\',\''+${#servletContext.contextPath}+'\')'">删除</a>
+        </td>
+    </tr>
+</table>
+</body>
+<script th:replace="/commons/common_js :: common_js"></script>
+<script>
+    function deploymentDel(deploymentId, path) {
+        if (confirm("确定删除？")) {
+            var param = "{deploymentId:" + deploymentId + "}";
+            var parseParam = eval('(' + param + ')');
+            ajaxUtil.post(path + "/process/deploymentDel", parseParam, function (success, data) {
+                if (success === true) {
+                    window.location.reload();
+                } else {
+                    alert(data.errorMsg);
+                }
+            });
+        }
+    }
+</script>
+</html>

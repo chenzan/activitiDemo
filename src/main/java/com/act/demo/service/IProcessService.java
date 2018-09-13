@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-public interface IWorkFlowService {
+public interface IProcessService {
     /**
      * 获取部署信息
      */

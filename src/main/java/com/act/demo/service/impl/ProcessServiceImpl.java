@@ -3,7 +3,7 @@ package com.act.demo.service.impl;
 import com.act.demo.common.ConstantValue;
 import com.act.demo.common.SessionContext;
 import com.act.demo.domain.SysUser;
-import com.act.demo.service.IWorkFlowService;
+import com.act.demo.service.IProcessService;
 import com.act.demo.util.ProcessDiagramGeneratorUtil;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.util.*;
 
 @Service
-public class WorkFlowServiceImpl implements IWorkFlowService {
+public class ProcessServiceImpl implements IProcessService {
     @Resource
     RepositoryService repositoryService;
     @Resource
@@ -80,10 +80,10 @@ public class WorkFlowServiceImpl implements IWorkFlowService {
     }
 
     @Override
-    public List<Task> getPersonalTasks(String name, String processDefId) {
+    public List<Task> getPersonalTasks(String name, String processDefKey) {
         List<Task> list = taskService.createTaskQuery()
                 .taskAssignee(name)
-                .processDefinitionKey(processDefId)
+                .processDefinitionKey(processDefKey)
                 .orderByTaskCreateTime()
                 .asc()
                 .list();
@@ -192,9 +192,12 @@ public class WorkFlowServiceImpl implements IWorkFlowService {
         HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceBusinessKey(businessKey)
                 .singleResult();
-        String hisProcessInstanceId = historicProcessInstance.getId();
-        List<Comment> processInstanceComments = taskService.getProcessInstanceComments(hisProcessInstanceId);
-        Collections.reverse(processInstanceComments);
+        List<Comment> processInstanceComments = new ArrayList<>();
+        if (historicProcessInstance != null) {
+            String hisProcessInstanceId = historicProcessInstance.getId();
+            processInstanceComments = taskService.getProcessInstanceComments(hisProcessInstanceId);
+            Collections.reverse(processInstanceComments);
+        }
         return processInstanceComments;
     }
 

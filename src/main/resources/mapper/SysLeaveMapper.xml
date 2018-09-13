@@ -10,6 +10,7 @@
         <result column="leave_end_time" jdbcType="TIMESTAMP" property="leaveEndTime"/>
         <result column="state" jdbcType="SMALLINT" property="state"/>
     </resultMap>
+    <cache/>
     <sql id="Base_Column_List">
     id, user_id, leave_day, leave_reason, leave_start_time, leave_end_time, state
   </sql>

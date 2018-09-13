@@ -1,13 +1,16 @@
 package com.act.demo.service.impl;
 
+import com.act.demo.common.ConstantValue;
+import com.act.demo.common.SessionContext;
 import com.act.demo.domain.SysLeave;
 import com.act.demo.domain.SysUser;
 import com.act.demo.mapper.SysLeaveMapper;
 import com.act.demo.service.ILeaveService;
 import com.act.demo.service.IUserService;
-import com.act.demo.service.IWorkFlowService;
+import com.act.demo.service.IProcessService;
 import com.act.demo.support.BaseService;
 import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +21,18 @@ import java.util.Map;
 @Service
 public class leaveServiceImpl extends BaseService<SysLeave, SysLeaveMapper> implements ILeaveService {
     @Autowired
-    IWorkFlowService workFlowService;
+    IProcessService processService;
     @Autowired
     IUserService userService;
     @Autowired
     ILeaveService leaveService;
+    @Autowired
+    SessionContext sessionContext;
 
     @Transactional
     public void applyLeave(SysLeave sysLeave) {
         this.insertSelective(sysLeave);
-        workFlowService.startProcessInstance(sysLeave, "sysLeave." + sysLeave.getId(), sysLeave.getAssigneeName());
+        processService.startProcessInstance(sysLeave, "sysLeave." + sysLeave.getId(), sysLeave.getAssigneeName());
     }
 
     @Override
@@ -35,7 +40,7 @@ public class leaveServiceImpl extends BaseService<SysLeave, SysLeaveMapper> impl
         SysLeave sysLeave = this.selectByPrimaryKey(leaveId);
         variables.put("day", sysLeave.getLeaveDay());
         //完成任务
-        boolean processFinish = workFlowService.completeTask(taskId, variables, comment);
+        boolean processFinish = processService.completeTask(taskId, variables, comment);
         if (processFinish) {
             SysLeave sysLeaveUpdate = new SysLeave();
             sysLeaveUpdate.setId(leaveId);
@@ -60,10 +65,30 @@ public class leaveServiceImpl extends BaseService<SysLeave, SysLeaveMapper> impl
     }
 
     @Override
+    public List<SysLeave> getPersonalLeaves() {
+        SysUser user = sessionContext.getSessionValue(ConstantValue.CURRENT_USER, SysUser.class);
+        List<SysLeave> sysLeaves = selectByUserId(user.getId());
+        for (SysLeave sysLeave : sysLeaves) {
+            Integer leaveId = sysLeave.getId();
+            List<Comment> comments = processService.getHistoryCommentByBusinessId("leave." + leaveId);
+            sysLeave.setComments(comments);
+        }
+        return sysLeaves;
+    }
+
+    @Override
+    public List<Task> getPersonalLeaveTasks() {
+        SysUser user = sessionContext.getSessionValue(ConstantValue.CURRENT_USER, SysUser.class);
+        //以当前业务的实体名称为流程定义的key
+        List<Task> personalTasks = processService.getPersonalTasks(user.getUsername(), SysLeave.class.getSimpleName());
+        return personalTasks;
+    }
+
+    @Override
     public List<Comment> selectLeaveLog(Integer leaveId, Map map) {
         SysLeave sysLeave = this.selectByPrimaryKey(leaveId);
         SysUser sysUser = userService.selectByUserId(sysLeave.getUserId());
-        List<Comment> comments = workFlowService.getHistoryCommentByBusinessId("sysLeave." + leaveId);
+        List<Comment> comments = processService.getHistoryCommentByBusinessId("sysLeave." + leaveId);
         map.put("comments", comments);
         map.put("sysLeave", sysLeave);
         map.put("sysUser", sysUser);

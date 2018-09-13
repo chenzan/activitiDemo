@@ -39,6 +39,7 @@ public class UserServiceImpl extends BaseService<SysUser, SysUserMapper> impleme
             return ResponseResult.error("用户不存在");
         }
         sessionContext.putSessionValue(ConstantValue.CURRENT_USER, sysUser);
+        sessionContext.putSessionValue(ConstantValue.LAST_LOGIN_TIME, System.currentTimeMillis());
         return ResponseResult.success();
     }
 }

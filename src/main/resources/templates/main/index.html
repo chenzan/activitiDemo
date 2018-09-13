@@ -1,106 +1,111 @@
-<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>index</title>
+    <link th:replace="/commons/common_css :: common_css">
+    <link th:href="@{/css/main.css}">
 </head>
 <body>
-<div>
-    ====================================================================================================
-    <div>
-        <form th:action="@{/leave/apply}">
-            <input hidden name="userId" th:value="${session.current_user.id}"/>
-            请假人<input readonly name="username" th:value="${session.current_user.username}"/><br/>
-            天数<input type="number" name="day"/><br/>
-            备注<input name="remark"/><br/>
-            <input type="submit" th:value="申请">
-        </form>
-    </div>
-    ====================================================================================================
-    <table border="1">
-        <caption>个人任务</caption>
-        <tr>
-            <th>任务id</th>
-            <th>任务名称</th>
-            <th>办理人</th>
-            <th>创建时间</th>
-            <th>操作</th>
-        </tr>
-        <tr th:each="task,tStat : ${tasks}">
-            <td th:text="${task.id}"></td>
-            <td th:text="${task.name}"></td>
-            <td th:text="${task.assignee}"></td>
-            <td th:text="${#dates.format(task.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-            <td>
-                <a target="_blank" th:href="@{/leave/handlerLeave(taskId=${task.id})}">办理任务</a>
-                <a target="_blank" th:href="@{/workflow/curProcessImg(taskId=${task.id})}">查看当前流程</a>
-            </td>
-        </tr>
-    </table>
-    ====================================================================================================
-    <table border="1">
-        <caption>请假记录</caption>
-        <tr>
-            <th>id</th>
-            <th>请假原因</th>
-            <th>天数</th>
-            <th>操作</th>
-        </tr>
-        <tr th:each="leave,lStat : ${leaves}">
-            <td th:text="${leave.id}"></td>
-            <td th:text="${leave.leaveReason}"></td>
-            <td th:text="${leave.leaveDay}"></td>
-            <td>
-                <a target="_blank" th:href="@{/leave/leaveLog(leaveId=${leave.id})}">查看</a>
-            </td>
-        </tr>
-    </table>
-    ====================================================================================================
-    <table border="1">
-        <caption>部署信息</caption>
-        <tr>
-            <th>部署id</th>
-            <th>部署名称</th>
-            <th>部署时间</th>
-            <th>操作</th>
-        </tr>
-        <tr th:each="deployment,userStat : ${deployments}">
-            <td th:text="${deployment.id}"></td>
-            <td th:text="${deployment.name}"></td>
-            <td th:text="${#dates.format(deployment.deploymentTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-            <td>
-                <a th:href="@{/workflow/deploymentDel(deploymentId=${deployment.id})}">删除</a>
-            </td>
-        </tr>
-    </table>
-    <br/>
-    <table border="1">
-        <caption>流程定义信息</caption>
-        <tr>
-            <th>id</th>
-            <th>名称</th>
-            <th>流程定义key</th>
-            <th>版本</th>
-            <th>流程定义规则文件名称</th>
-            <th>流程定义规则图片名称</th>
-            <th>部署id</th>
-            <th>操作</th>
-        </tr>
-        <tr th:each="definitionP,defStat : ${definitionProcess}">
-            <td th:text="${definitionP.id}"></td>
-            <td th:text="${definitionP.name}"></td>
-            <td th:text="${definitionP.key}"></td>
-            <td th:text="${definitionP.version}"></td>
-            <td th:text="${#strings.substringAfter(definitionP.getResourceName(),'leave\')}"></td>
-            <td th:text="${#strings.substringAfter(definitionP.getDiagramResourceName(),'leave\')}"></td>
-            <td th:text="${definitionP.deploymentId}"></td>
-            <td>
-                <a href="index.html" target="_blank"
-                   th:href="@{/workflow/processImg(deploymentId=${definitionP.deploymentId},resourceName= ${definitionP.getDiagramResourceName()})}">查看流程图</a>
-            </td>
-        </tr>
-    </table>
+<div class="app layout">
+    <!-- 头部菜单 -->
+    <header class="header header-fixed navbar">
+        <div class="brand">
+            <a href="javascript:" class="ti-menu off-left visible-xs" data-toggle="offscreen" data-move="ltr"></a>
+            <a th:href="@{/main/index}" class="navbar-brand">
+                <span class="heading-font">
+               	主页
+                </span>
+            </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="off-right">
+                <a href="javascript:;" data-toggle="dropdown">
+                    <img th:src="@{/img/avatar.jpg}" class="header-avatar img-circle"
+                         th:alt="${session.current_user.username}"
+                         th:title="${session.current_user.username}">
+                    <span class="hidden-xs ml10"></span>
+                    <span th:text="${session.current_user.username}"/>
+                    <i class="ti-angle-down ti-caret hidden-xs"></i>
+                </a>
+                <div class="dropdown-menu animated profile" style="min-width: 300px;">
+                    <div class="panel no-m">
+                        <div class="panel content p10 no-m" style="max-height:350px">
+                            <div class="profile">
+                                <div class="profile-img">
+                                    <img width="80" th:src="@{/img/avatar.jpg}" class="img-circle">
+                                </div>
+                                <div class="profile-name">
+                                    <p th:value="${session.current_user.username}"></p>
+                                    <p class="text-muted login-time">
+                                        登录时间：
+                                        <span th:text="${#dates.format(session.last_login_time,'yyyy-MM-dd HH:mm:ss')}"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-center mt15">
+                                <a class="btn btn-default btn-sm" href="javascript:;" onclick="ns.userCenter()"><i
+                                        class="fa fa-user"></i> 个人中心</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <section class="layout">
+        <!-- 菜单 -->
+        <aside class="sidebar offscreen-left">
+            <!-- main navigation -->
+            <nav class="main-navigation" data-height="auto" data-size="6px" data-distance="0" data-rail-visible="true"
+                 data-wheel-step="10">
+                <ul class="nav">
+                    <li>
+                        <a th:href="@{/leave/leaveBegin}" title="请假业务" data-tabs-link
+                           target="indexFrame">
+                            <b>请假业务</b>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/leave/currentTask}" title="待办任务" data-tabs-link
+                           target="indexFrame">
+                            <b>待办请假任务</b>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/leave/leaveList}" title="请假业务" data-tabs-link
+                           target="indexFrame">
+                            <b>我的请假记录</b>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/process/processDef}" title="流程定义" data-tabs-link
+                           target="indexFrame">
+                            <b>流程定义</b>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/process/processDeployment}" title="部署管理" data-tabs-link
+                           target="indexFrame">
+                            <b>部署管理</b>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- 内容主体 -->
+        <section class="main-content">
+            <div class="content-wrap">
+                <div class="wrapper no-p">
+                    <iframe id="indexFrame" name="indexFrame" src="" frameborder="0" width="100%"
+                            height="100%"></iframe>
+                </div>
+            </div>
+            <a class="exit-offscreen"></a>
+        </section>
+    </section>
 </div>
+<script th:replace="/commons/common_js :: common_js"></script>
 </body>
 </html>

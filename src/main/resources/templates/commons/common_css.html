@@ -1,10 +1,21 @@
 <th:block th:fragment="common_css" xmlns:th="http://www.w3.org/1999/xhtml">
-    <link rel="shortcut icon" href="$!system_logo">
+    <!--<link rel="shortcut icon" href="$!system_logo">-->
     <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type='text/css' media='screen'>
     <link rel="stylesheet" th:href="@{/css/font-awesome.css}" type='text/css' media='screen'>
     <link rel="stylesheet" th:href="@{/css/themify-icons.css}" type='text/css' media='screen'>
     <link rel="stylesheet" th:href="@{/css/simple-line-icons.css}" type='text/css' media='screen'>
     <link rel="stylesheet" th:href="@{/css/animate.min.css}" type='text/css' media='screen'>
     <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}" type='text/css' media='screen'>
-    <!--<link rel="stylesheet" href="./css/main.css" type='text/css' media='screen'>-->
+    <link rel="stylesheet" th:href="@{/css/main.css}" type='text/css' media='screen'>
+    <link rel="stylesheet" th:href="@{/css/skins/palette.css}" type='text/css' media='screen'>
+    <style>
+        .table {
+            word-wrap: break-word;
+            table-layout: fixed;
+        }
+
+        a {
+            cursor: pointer;
+        }
+    </style>
 </th:block>

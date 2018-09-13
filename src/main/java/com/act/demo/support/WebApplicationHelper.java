@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class WebApplicationHelper {
     public static final String LOGIN = "/login";
+    public static final String ERROR = "/error";
 
     /**
      * 获取request
@@ -51,6 +52,8 @@ public class WebApplicationHelper {
                 log.info("ignore login intercept:" + requestUrl + "");
                 return true;
             }
+        }else if (requestUrl.equals(ERROR)){
+            return true;
         }
         return false;
     }

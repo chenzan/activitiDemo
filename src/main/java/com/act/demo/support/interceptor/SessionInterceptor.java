@@ -24,6 +24,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 只处理handlerMethod方法
         if (handler instanceof HandlerMethod) {
             if (WebApplicationHelper.isIgnoreLoginRequest(request, (HandlerMethod) handler)) {
                 return true;
