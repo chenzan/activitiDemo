@@ -6,10 +6,13 @@ import com.act.demo.service.ILeaveService;
 import com.act.demo.service.IUserService;
 import com.act.demo.service.IProcessService;
 import com.act.demo.support.BaseController;
+import com.act.demo.support.ResponseResult;
+import com.alibaba.fastjson.JSONObject;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -51,11 +54,12 @@ public class LeaveController extends BaseController {
      *
      * @return
      */
+    @ResponseBody
     @RequestMapping("/leaveLog")
-    public String leaveLogAction(Integer leaveId, Map map) {
-        List<Comment> comments = leaveService.selectLeaveLog(leaveId, map);
-        map.put("comments",comments);
-        return "leave/leaveLog";
+    public JSONObject leaveLogAction(Integer leaveId) {
+        JSONObject jsonObject = new JSONObject();
+        leaveService.selectLeaveLog(leaveId, jsonObject);
+        return ResponseResult.success(jsonObject);
     }
 
     /**
@@ -89,7 +93,7 @@ public class LeaveController extends BaseController {
         sysLeave.setAssigneeName(username);
         sysLeave.setState(1);
         leaveService.applyLeave(sysLeave);
-        return "forward:/leaveList";
+        return "forward:/leave/leaveList";
     }
 
     /**
@@ -121,6 +125,6 @@ public class LeaveController extends BaseController {
         map.put("sysUser", sysUser);
         List<Comment> commentByTaskId = processService.getCommentByTaskId(taskId);
         map.put("comments", commentByTaskId);
-        return "leave/leave";
+        return "leave/leaveHandler";
     }
 }

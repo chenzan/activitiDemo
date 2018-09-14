@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 处理controller方法参数
+ */
 @Component
 public class ListArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -35,13 +38,15 @@ public class ListArgumentResolver implements HandlerMethodArgumentResolver {
         List<String> list = new ArrayList();
         RequestList requestList = methodParameter.getParameterAnnotation(RequestList.class);
         String[] parameterValues = nativeWebRequest.getParameterValues(requestList.name());
-        if (parameterValues.length > 0) {
-            if (parameterValues.length == 1) {//,分割情况
-                String parameter = nativeWebRequest.getParameter(requestList.name());
-                String[] split = parameter.split(requestList.separator());
-                Collections.addAll(list, split);
-            } else {
-                Collections.addAll(list, parameterValues);
+        if (parameterValues != null) {
+            if (parameterValues.length > 0) {
+                if (parameterValues.length == 1) {//,分割情况
+                    String parameter = nativeWebRequest.getParameter(requestList.name());
+                    String[] split = parameter.split(requestList.separator());
+                    Collections.addAll(list, split);
+                } else {
+                    Collections.addAll(list, parameterValues);
+                }
             }
         }
         return list;

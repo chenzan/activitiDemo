@@ -62,4 +62,23 @@ public class LogServiceImpl extends BaseService<SysLog, SysLogMapper> implements
             this.insertSelective(sysLog);
         }
     }
+
+    @Override
+    public void saveLog(String content) {
+        String username = "unKnow";
+        SysUser user = sessionContext.getSessionValue(ConstantValue.CURRENT_USER, SysUser.class);
+        if (null != user) {
+            username = user.getUsername();
+        }
+        SysLog sysLog = new SysLog();
+        sysLog.setLevel(2);
+        sysLog.setContent(content);
+        sysLog.setUser(username);
+//        sysLog.setIp(requestLogWrapper.remoteAddr);
+//        sysLog.setBrowser(requestLogWrapper.browser);
+//        sysLog.setPlatform(requestLogWrapper.platform);
+        sysLog.setLogTime(new Date());
+//        sysLog.setSource(method.getDeclaringClass().getSimpleName());
+        this.insertSelective(sysLog);
+    }
 }

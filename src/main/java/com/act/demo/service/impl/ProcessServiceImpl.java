@@ -15,6 +15,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -63,7 +64,12 @@ public class ProcessServiceImpl implements IProcessService {
 
     @Override
     public InputStream getProcessDefResourceImg(String deploymentId, String resourceName) {
-        return repositoryService.getResourceAsStream(deploymentId, resourceName);
+        // 使用默认配置获得流程图表生成器，并生成追踪图片字符流
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId).singleResult();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
+        ProcessDiagramGenerator processDiagramGenerator = processEngine.getProcessEngineConfiguration().getProcessDiagramGenerator();
+        processDiagramGenerator.generateDiagram(bpmnModel, "png", new ArrayList<>(), new ArrayList<>(), "宋体", "微软雅黑", "黑体", null, 2.0);
+        return processDiagramGenerator.generateDiagram(bpmnModel, "png", new ArrayList<>(), new ArrayList<>(), "宋体", "微软雅黑", "黑体", null, 2.0)/*repositoryService.getResourceAsStream(deploymentId, resourceName)*/;
     }
 
     @Override

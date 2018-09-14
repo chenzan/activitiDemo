@@ -1,14 +1,14 @@
 //package com.act.demo.config;
 //
 //import org.activiti.engine.*;
+//import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 //import org.activiti.spring.ProcessEngineFactoryBean;
 //import org.activiti.spring.SpringProcessEngineConfiguration;
-//import org.activiti.spring.boot.AbstractProcessEngineAutoConfiguration;
+//import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.transaction.PlatformTransactionManager;
 //
-//import javax.annotation.Resource;
 //import javax.sql.DataSource;
 //
 ///**
@@ -19,64 +19,66 @@
 // * @modifier
 // * @modifier-data
 // */
-////@Configuration
-//public class ActivitiConfig extends AbstractProcessEngineAutoConfiguration {
-//    @Resource
+//@Configuration
+//public class ActivitiConfig {
+//    @Autowired
 //    DataSource dataSource;
-//    @Resource
-//    PlatformTransactionManager transactionManager;
 //
-//    private static final String FONT_TYPE = "Microsoft Yahei";
+//    private static final String FONT_TYPE = "宋体";
 //
 //    @Bean
-//    public ProcessEngineConfiguration processEngineConfiguration() {
-//        ProcessEngineConfiguration springProcessEngineConfiguration = new ProcessEngineConfiguration();
-//        springProcessEngineConfiguration.setDataSource(dataSource);
-////        springProcessEngineConfiguration.setTransactionManager(transactionManager);
-//        springProcessEngineConfiguration.setActivityFontName(FONT_TYPE);
-//        springProcessEngineConfiguration.setLabelFontName(FONT_TYPE);
-//        springProcessEngineConfiguration.setDatabaseSchemaUpdate(SpringProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
-//        springProcessEngineConfiguration.setAsyncExecutorActivate(false);
-//        return this.baseSpringProcessEngineConfiguration(dataSource,transactionManager,);
+//    public ProcessEngineConfiguration processEngineConfiguration(PlatformTransactionManager platformTransactionManager) {
+//        SpringProcessEngineConfiguration processEngineConfiguration = new SpringProcessEngineConfiguration();
+//        processEngineConfiguration.setDataSource(dataSource);
+//        processEngineConfiguration.setTransactionManager(platformTransactionManager);
+//        processEngineConfiguration.setActivityFontName(FONT_TYPE);
+//        processEngineConfiguration.setLabelFontName(FONT_TYPE);
+//        processEngineConfiguration.setAnnotationFontName(FONT_TYPE);
+//        processEngineConfiguration.setDatabaseSchemaUpdate(SpringProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+//        processEngineConfiguration.setAsyncExecutorActivate(false);
+//        return processEngineConfiguration;
 //    }
 //
 //    @Bean
-//    public ProcessEngine processEngine() {
-//        return processEngineConfiguration();
+//    public ProcessEngineFactoryBean processEngineFactoryBean(ProcessEngineConfiguration processEngineConfiguration) {
+//        ProcessEngineFactoryBean processEngineFactoryBean = new ProcessEngineFactoryBean();
+//        processEngineFactoryBean.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
+//        return processEngineFactoryBean;
+//    }
+//
+//
+//    @Bean
+//    public RepositoryService repositoryService(ProcessEngine processEngine) {
+//        return processEngine.getRepositoryService();
 //    }
 //
 //    @Bean
-//    public RepositoryService repositoryService() {
-//        return processEngine().getRepositoryService();
+//    public RuntimeService runtimeService(ProcessEngine processEngine) {
+//        return processEngine.getRuntimeService();
 //    }
 //
 //    @Bean
-//    public RuntimeService runtimeService() {
-//        return processEngine().getRuntimeService();
+//    public TaskService taskService(ProcessEngine processEngine) {
+//        return processEngine.getTaskService();
 //    }
 //
 //    @Bean
-//    public TaskService taskService() {
-//        return processEngine().getTaskService();
+//    public HistoryService historyService(ProcessEngine processEngine) {
+//        return processEngine.getHistoryService();
 //    }
 //
 //    @Bean
-//    public HistoryService historyService() {
-//        return processEngine().getHistoryService();
+//    public ManagementService managementService(ProcessEngine processEngine) {
+//        return processEngine.getManagementService();
 //    }
 //
 //    @Bean
-//    public ManagementService managementService() {
-//        return processEngine().getManagementService();
+//    public FormService formService(ProcessEngine processEngine) {
+//        return processEngine.getFormService();
 //    }
 //
 //    @Bean
-//    public FormService formService() {
-//        return processEngine().getFormService();
-//    }
-//
-//    @Bean
-//    public IdentityService identityService() {
-//        return processEngine().getIdentityService();
+//    public IdentityService identityService(ProcessEngine processEngine) {
+//        return processEngine.getIdentityService();
 //    }
 //}

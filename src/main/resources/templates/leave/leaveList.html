@@ -23,10 +23,83 @@
             <td th:text="${leave.leaveReason}"></td>
             <td th:text="${leave.leaveDay}"></td>
             <td>
-                <a target="_blank" th:href="@{/leave/leaveLog(leaveId=${leave.id})}">查看</a>
+                <a data-toggle="modal" th:onclick="'leaveInfo('+${leave.id}+')'"
+                   data-target="#myModal">查看</a>
             </td>
         </tr>
     </table>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="/commons/common_js :: common_js"></script>
+<script>
+    $("#myModal").on("hidden.bs.modal", function() {
+        $(".modal-body").removeChild($("#formModel"));
+        $(".modal-body").removeChild($("#tableModel"));
+    });
+    function leaveInfo(leaveId) {
+        ajaxUtil.get("/leave/leaveLog?leaveId=" + leaveId, function (result, data) {
+            var formatData = eval('data');
+            var objectData = formatData.data;
+            var html = "<form id='formModel' th:action=\"@{/leave/approval}\" class=\"form-horizontal parsley-form\">\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label class=\"col-sm-1 control-label\">请假人</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input class=\"form-control\" readonly name=\"username\" value=" + objectData.sysUser.username + "><br/>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label readonly class=\"col-sm-1 control-label\">天数</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input readonly class=\"form-control\" min=\"0\" type=\"number\" name=\"day\" value=" + objectData.sysLeave.leaveDay + ">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label readonly class=\"col-sm-1 control-label\">时间</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveStartTime + ">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label readonly class=\"col-sm-1 control-label\">备注</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveReason + ">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </form>\n" +
+                "    <table id='tableModel' class=\"table table-bordered\">\n" +
+                "        <caption>历史批注</caption>\n" +
+                "        <tr>\n" +
+                "            <th>id</th>\n" +
+                "            <th>处理人</th>\n" +
+                "            <th>意见</th>\n" +
+                "            <th>处理时间</th>\n" +
+                "        </tr>\n";
+            html += "<tr>";
+            for (var i = 0; i < objectData.comments.length; i++) {
+                var hisComment = objectData.comments[i];
+                "<td text=" + hisComment.userId + "></td>\n" +
+                "<td text=" + hisComment.fullMessage + "></td>\n" +
+                "<td text=" + hisComment.time + "></td>\n";
+            }
+            html += "</tr>\n" +
+                "</table>";
+            $(".modal-body").append(html);
+            $('#myModal').modal('show')
+        });
+    }
+</script>
 </body>
 </html>

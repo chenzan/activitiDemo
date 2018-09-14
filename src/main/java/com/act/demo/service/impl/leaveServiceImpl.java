@@ -9,6 +9,7 @@ import com.act.demo.service.ILeaveService;
 import com.act.demo.service.IUserService;
 import com.act.demo.service.IProcessService;
 import com.act.demo.support.BaseService;
+import com.alibaba.fastjson.JSONObject;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,14 +86,14 @@ public class leaveServiceImpl extends BaseService<SysLeave, SysLeaveMapper> impl
     }
 
     @Override
-    public List<Comment> selectLeaveLog(Integer leaveId, Map map) {
+    public JSONObject selectLeaveLog(Integer leaveId,JSONObject jsonObject) {
         SysLeave sysLeave = this.selectByPrimaryKey(leaveId);
         SysUser sysUser = userService.selectByUserId(sysLeave.getUserId());
         List<Comment> comments = processService.getHistoryCommentByBusinessId("sysLeave." + leaveId);
-        map.put("comments", comments);
-        map.put("sysLeave", sysLeave);
-        map.put("sysUser", sysUser);
-        return comments;
+        jsonObject.put("comments", comments);
+        jsonObject.put("sysLeave", sysLeave);
+        jsonObject.put("sysUser", sysUser);
+        return jsonObject;
     }
 
 }

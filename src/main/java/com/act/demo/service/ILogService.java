@@ -15,4 +15,7 @@ public interface ILogService {
      * @param requestLogWrapper
      */
     void log(Method method, Log log, LogAspect.RequestLogWrapper requestLogWrapper);
+
+    void saveLog(String content);
+
 }

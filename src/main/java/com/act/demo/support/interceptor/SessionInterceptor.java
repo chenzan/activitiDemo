@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * session拦截器
+ */
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
     @Autowired

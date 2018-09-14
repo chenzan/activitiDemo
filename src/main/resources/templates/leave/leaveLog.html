@@ -9,21 +9,25 @@
 <body>
 <div>
     <form th:action="@{/leave/approval}" class="form-horizontal parsley-form">
-
         <input hidden name="businessId" th:value="${sysLeave.id}"/>
         <input hidden name="taskId" th:value="${taskId}"/>
         <div class="form-group">
             <label class="col-sm-1 control-label">请假人</label>
-            <input class="form-control" readonly name="username" th:value="${sysUser.username}"/><br/>
-
+            <div class="col-sm-5">
+                <input class="form-control" readonly name="username" th:value="${sysUser.username}"/><br/>
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">天数</label>
-            <input class="form-control" min="0" type="number" name="day" th:value="${sysLeave.leaveDay}"/>
+            <div class="col-sm-5">
+                <input class="form-control" min="0" type="number" name="day" th:value="${sysLeave.leaveDay}"/>
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">备注</label>
-            <input class="form-control" name="remark" th:value="${sysLeave.leaveReason}"/>
+            <div class="col-sm-5">
+                <input class="form-control" name="remark" th:value="${sysLeave.leaveReason}"/>
+            </div>
         </div>
     </form>
     <table class="table table-bordered">

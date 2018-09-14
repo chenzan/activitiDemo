@@ -47,6 +47,8 @@
                             <div class="text-center mt15">
                                 <a class="btn btn-default btn-sm" href="javascript:;" onclick="ns.userCenter()"><i
                                         class="fa fa-user"></i> 个人中心</a>
+                                <a class="btn btn-default btn-sm" href="javascript:;" onclick="exit()"><i
+                                        class="fa fa-user"></i> 退出</a>
                             </div>
                         </div>
                     </div>
@@ -107,5 +109,10 @@
     </section>
 </div>
 <script th:replace="/commons/common_js :: common_js"></script>
+<script>
+    function exit() {
+        window.location.href = "/logout";
+    }
+</script>
 </body>
 </html>

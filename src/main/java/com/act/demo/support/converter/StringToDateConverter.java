@@ -8,6 +8,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 转化日期参数
+ */
 @Component
 public class StringToDateConverter implements Converter<String, Date> {
     //spring内置的DateFormatter只能注释在实体类的实例变量

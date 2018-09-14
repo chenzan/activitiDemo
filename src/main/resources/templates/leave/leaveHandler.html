@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link th:replace="/commons/common_css :: common_css">
+</head>
+<body>
+<div>
+    <div>
+        <form th:action="@{/leave/approval}" class="form-horizontal parsley-form">
+            <input hidden name="businessId" th:value="${sysLeave.id}"/>
+            <input hidden name="taskId" th:value="${taskId}"/>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">请假人</label>
+                <div class="col-sm-5">
+                    <input class="form-control" readonly name="username" th:value="${sysUser.username}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">天数</label>
+                <div class="col-sm-5">
+                    <input class="form-control" readonly name="day" th:value="${sysLeave.leaveDay}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">备注</label>
+                <div class="col-sm-5">
+                    <input class="form-control" readonly name="remark" th:value="${sysLeave.leaveReason}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">意见</label>
+                <div class="col-sm-5">
+                    <input class="form-control" name="comment"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div th:each="btn,stat:${transitionNames}">
+                    <input th:value="${btn}" type="submit" name="btnName"/>
+                </div>
+            </div>
+        </form>
+        <div th:if="${#lists.size(comments)!=0}">
+            <table class="table table-bordered">
+                <caption>历史意见</caption>
+                <tr>
+                    <th>id</th>
+                    <th>处理人</th>
+                    <th>意见</th>
+                    <th>处理时间</th>
+                </tr>
+                <tr th:each="hisComment,comStat : ${comments}">
+
+                    <td th:text="${hisComment.id}"></td>
+                    <td th:text="${hisComment.userId}"></td>
+                    <td th:text="${hisComment.fullMessage}"></td>
+                    <td th:text="${#dates.format(hisComment.time,'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

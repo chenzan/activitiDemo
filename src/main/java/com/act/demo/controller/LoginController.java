@@ -4,14 +4,20 @@ import com.act.demo.aop.annotation.Log;
 import com.act.demo.service.IUserService;
 import com.act.demo.support.BaseController;
 import com.act.demo.support.annotation.IgnoreLogin;
+import com.act.demo.support.annotation.RequestList;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
 
+@Slf4j
 @Controller
 @IgnoreLogin
 public class LoginController extends BaseController {
@@ -28,7 +34,18 @@ public class LoginController extends BaseController {
     @IgnoreLogin
     @ResponseBody
     @RequestMapping("/loginAction")
-    public JSONObject loginAction(HttpSession session, String username, String password) {
+    public JSONObject loginAction(HttpSession session, String username, String password, Date nowDate,
+                                  @RequestList(name = "aaa") List aaas) {
+        log.info(nowDate.toString());
         return userService.loginAction(username, password, session);
+    }
+
+    @RequestMapping(
+            value = {"/logout"},
+            method = {RequestMethod.GET, RequestMethod.POST}
+    )
+    public String doLogout(HttpSession session) {
+        userService.executeLoginOut(session);
+        return "redirect:/login";
     }
 }

@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
+/**
+ * 处理异常
+ */
 @Slf4j
 @Component
 public class ExceptionResolver implements HandlerExceptionResolver {

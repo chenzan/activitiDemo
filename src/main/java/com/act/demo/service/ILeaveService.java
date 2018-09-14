@@ -1,6 +1,7 @@
 package com.act.demo.service;
 
 import com.act.demo.domain.SysLeave;
+import com.alibaba.fastjson.JSONObject;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 
@@ -45,10 +46,10 @@ public interface ILeaveService {
      * 获取请假记录 批注
      *
      * @param leaveId
-     * @param map
+     * @param jsonObject
      * @return
      */
-    List<Comment> selectLeaveLog(Integer leaveId, Map map);
+    JSONObject selectLeaveLog(Integer leaveId, JSONObject jsonObject);
 
     /**
      * 获取某个请假记录
@@ -66,6 +67,7 @@ public interface ILeaveService {
 
     /**
      * 获取我的当前请假任务
+     *
      * @return
      */
     List<Task> getPersonalLeaveTasks();

@@ -20,4 +20,10 @@ public interface IUserService {
     SysUser selectByUserId(Integer userId);
 
     void insertUser(SysUser sysUser);
+
+    /**
+     * 退出
+     * @param session
+     */
+    void executeLoginOut(HttpSession session);
 }
