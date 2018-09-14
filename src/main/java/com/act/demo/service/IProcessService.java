@@ -90,6 +90,7 @@ public interface IProcessService {
 
     /**
      * 根据业务key查询历史
+     *
      * @param businessKey
      * @return
      */
@@ -97,8 +98,11 @@ public interface IProcessService {
 
     /**
      * 根据任务id查询流程图片
+     *
      * @param taskId
      * @return
      */
     InputStream getProcessImgByTaskId(String taskId);
+
+    void deployWithZip(InputStream inputStream, String processName);
 }

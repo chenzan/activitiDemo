@@ -10,9 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,6 +28,38 @@ import java.util.Map;
 public class ProcessController extends BaseController {
     @Autowired
     IProcessService processService;
+
+    @RequestMapping("/uploadPage")
+    public String uploadPage() {
+        return "process/processUpload";
+    }
+
+    /**
+     * 流程zip部署
+     *
+     * @param uploadFiles
+     * @param processName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/uploadDeploymentZip")
+    public JSONObject uploadDeploymentZip(@RequestParam("file") MultipartFile[] uploadFiles,
+                                          @RequestParam(required = false) String processName) {
+        if (uploadFiles.length <= 0) {
+            return ResponseResult.error("请选择文件后再上传");
+        }
+        MultipartFile[] files = uploadFiles;
+        MultipartFile file = files[0];
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        processService.deployWithZip(inputStream, processName);
+
+        return ResponseResult.success();
+    }
 
     /**
      * 查看完整流程图
@@ -75,7 +109,7 @@ public class ProcessController extends BaseController {
     @ResponseBody
     @RequestMapping("/deploymentDel")
     public JSONObject deploymentDel(String deploymentId) {
-        if (StringUtils.isEmpty(deploymentId)){
+        if (StringUtils.isEmpty(deploymentId)) {
             return ResponseResult.error("部署id为空");
         }
         processService.deleteDeployment(deploymentId);

@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.*;
+import java.util.zip.ZipInputStream;
 
 @Service
 public class ProcessServiceImpl implements IProcessService {
@@ -242,5 +243,18 @@ public class ProcessServiceImpl implements IProcessService {
             e.printStackTrace();
         }
         return resourceAsStream;
+    }
+
+    @Override
+    public void deployWithZip(InputStream inputStream, String processName) {
+        ZipInputStream zipInputStream = new ZipInputStream(inputStream); // 实例化zip输入流对象
+        // 获取部署对象
+        Deployment deployment = processEngine.getRepositoryService() // 部署Service
+                .createDeployment()  // 创建部署
+                .name(processName)  // 流程名称
+                .addZipInputStream(zipInputStream)  // 添加zip是输入流
+                .deploy(); // 部署
+        System.out.println("流程部署ID:" + deployment.getId());
+        System.out.println("流程部署Name:" + deployment.getName());
     }
 }
