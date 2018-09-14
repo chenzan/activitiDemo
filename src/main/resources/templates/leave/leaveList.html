@@ -45,10 +45,11 @@
 </div>
 <script th:replace="/commons/common_js :: common_js"></script>
 <script>
-    $("#myModal").on("hidden.bs.modal", function() {
+    $("#myModal").on("hidden.bs.modal", function () {
         $(".modal-body").removeChild($("#formModel"));
         $(".modal-body").removeChild($("#tableModel"));
     });
+
     function leaveInfo(leaveId) {
         ajaxUtil.get("/leave/leaveLog?leaveId=" + leaveId, function (result, data) {
             var formatData = eval('data');
@@ -69,33 +70,32 @@
                 "        <div class=\"form-group\">\n" +
                 "            <label readonly class=\"col-sm-1 control-label\">时间</label>\n" +
                 "            <div class=\"col-sm-8\">\n" +
-                "                <input class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveStartTime + ">\n" +
+                "                <input readonly class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveStartTime + ">\n" +
                 "            </div>\n" +
                 "        </div>\n" +
                 "        <div class=\"form-group\">\n" +
                 "            <label readonly class=\"col-sm-1 control-label\">备注</label>\n" +
                 "            <div class=\"col-sm-8\">\n" +
-                "                <input class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveReason + ">\n" +
+                "                <input readonly class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveReason + ">\n" +
                 "            </div>\n" +
                 "        </div>\n" +
                 "    </form>\n" +
                 "    <table id='tableModel' class=\"table table-bordered\">\n" +
                 "        <caption>历史批注</caption>\n" +
-                "        <tr>\n" +
-                "            <th>id</th>\n" +
+                "        <tr>" +
                 "            <th>处理人</th>\n" +
                 "            <th>意见</th>\n" +
                 "            <th>处理时间</th>\n" +
-                "        </tr>\n";
-            html += "<tr>";
+                "        </tr>";
             for (var i = 0; i < objectData.comments.length; i++) {
                 var hisComment = objectData.comments[i];
-                "<td text=" + hisComment.userId + "></td>\n" +
-                "<td text=" + hisComment.fullMessage + "></td>\n" +
-                "<td text=" + hisComment.time + "></td>\n";
+                html += "<tr>";
+                html += "<td>" + hisComment.userId + "</td>\n";
+                html += "<td>" + hisComment.fullMessage + "</td>\n";
+                html += "<td>" + hisComment.time + "</td>\n";
+                html += "</tr>";
             }
-            html += "</tr>\n" +
-                "</table>";
+            html += "</table>";
             $(".modal-body").append(html);
             $('#myModal').modal('show')
         });
