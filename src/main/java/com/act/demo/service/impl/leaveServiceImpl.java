@@ -1,5 +1,6 @@
 package com.act.demo.service.impl;
 
+import com.act.demo.aop.annotation.Log;
 import com.act.demo.common.ConstantValue;
 import com.act.demo.common.SessionContext;
 import com.act.demo.domain.SysLeave;
@@ -55,6 +56,7 @@ public class leaveServiceImpl extends BaseService<SysLeave, SysLeaveMapper> impl
         return mMapper.selectAll(userId);
     }
 
+    @Log(name = "ceshj", content = "sssss",target = Log.Target.CONSOLE)
     @Override
     public List<SysLeave> selectByUserId(int userId) {
         return mMapper.selectByUserId(userId);

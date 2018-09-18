@@ -2,7 +2,6 @@ package com.act.demo.support;
 
 import com.act.demo._holder.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -11,9 +10,8 @@ import java.lang.reflect.Type;
  * @param <B> 实体类
  * @param <M> dao
  */
-@Component
 public abstract class BaseService<B, M extends BaseMapper> {
-    protected Class<M> mClass;
+    private Class<M> mClass;
     protected M mMapper;
     @Autowired
     SpringContextHolder springContextHolder;

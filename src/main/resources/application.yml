@@ -5,11 +5,23 @@ spring:
       force: true
       enabled: true
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/activiti_01?useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: 123
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/activiti_01?useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: 123
+    master:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.6.136:3306/activiti_01?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: Root!123
+    slave:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.6.137:3306/activiti_01?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: Root!123
   activiti:
     async-executor-activate: false
     process-definition-location-prefix: classpath:/processes/*/

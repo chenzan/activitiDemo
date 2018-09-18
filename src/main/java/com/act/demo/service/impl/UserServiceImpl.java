@@ -8,11 +8,10 @@ import com.act.demo.service.IUserService;
 import com.act.demo.support.BaseService;
 import com.act.demo.support.ResponseResult;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.naming.Name;
 import javax.servlet.http.HttpSession;
 
 @Service("userService")
@@ -42,7 +41,7 @@ public class UserServiceImpl extends BaseService<SysUser, SysUserMapper> impleme
 
     @Override
     public JSONObject loginAction(String username, String password, HttpSession session) {
-        SysUser sysUser = selectByNamePwd(username, password);
+        SysUser sysUser = ((UserServiceImpl) AopContext.currentProxy()).selectByNamePwd(username, password);
         if (sysUser == null) {
             return ResponseResult.error("用户不存在");
         }

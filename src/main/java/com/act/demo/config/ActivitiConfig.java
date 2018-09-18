@@ -9,7 +9,7 @@
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.transaction.PlatformTransactionManager;
 //
-//import javax.sql.DataSource;
+//import javax.sql.DataSourceSwitch;
 //
 ///**
 // * @author chenzan
@@ -22,7 +22,7 @@
 //@Configuration
 //public class ActivitiConfig {
 //    @Autowired
-//    DataSource dataSource;
+//    DataSourceSwitch dataSource;
 //
 //    private static final String FONT_TYPE = "宋体";
 //
