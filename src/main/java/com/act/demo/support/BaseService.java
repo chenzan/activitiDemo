@@ -1,6 +1,6 @@
 package com.act.demo.support;
 
-import com.act.demo._holder.SpringContextHolder;
+import com.act.demo._holder.SpringApplicationContextHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
@@ -14,7 +14,7 @@ public abstract class BaseService<B, M extends BaseMapper> {
     private Class<M> mClass;
     protected M mMapper;
     @Autowired
-    SpringContextHolder springContextHolder;
+    SpringApplicationContextHelper springContextHolder;
 
     public BaseService() {
         Class<?> aClass = this.getClass();
@@ -25,7 +25,7 @@ public abstract class BaseService<B, M extends BaseMapper> {
         } else {
             mClass = null;
         }
-        mMapper = SpringContextHolder.getBean(mClass);
+        mMapper = SpringApplicationContextHelper.getBean(mClass);
     }
 
     protected int insert(B b) {

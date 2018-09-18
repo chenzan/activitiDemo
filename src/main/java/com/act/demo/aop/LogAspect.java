@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class LogAspect {
-
     @Autowired
     ILogService logService;
 

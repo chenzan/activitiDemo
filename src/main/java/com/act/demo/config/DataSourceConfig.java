@@ -16,13 +16,16 @@ public class DataSourceConfig {
     @Value("${spring.datasource.slave.type}")
     Class<? extends DataSource> slaveDataSourceType;
 
-    @Bean(name = "masterDataSource")
+    public static final String MASTER_DATASOURCE_NAME = "masterDataSource";
+    public static final String SLAVE_DATASOURCE_NAME = "slaveDataSource";
+
+    @Bean(name = MASTER_DATASOURCE_NAME)
     @ConfigurationProperties("spring.datasource.master")
     public DataSource masterDataSource() {
         return DataSourceBuilder.create().type(masterDataSourceType).build();
     }
 
-    @Bean(name = "slaveDataSource")
+    @Bean(name = SLAVE_DATASOURCE_NAME)
     @ConfigurationProperties("spring.datasource.slave")
     public DataSource slaveDataSource() {
         return DataSourceBuilder.create().type(slaveDataSourceType).build();

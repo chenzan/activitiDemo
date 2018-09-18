@@ -1,4 +1,4 @@
-package com.act.demo.support.orm;
+package com.act.demo.support.orm.version1;
 
 /**
  * @author chenzan

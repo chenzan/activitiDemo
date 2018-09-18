@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
  * 所以要优先加载
  */
 @Component
-public class SpringContextHolder implements ApplicationContextAware {
+public class SpringApplicationContextHelper implements ApplicationContextAware {
     private static ApplicationContext applicationContext = null;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringContextHolder.applicationContext = applicationContext;
+        SpringApplicationContextHelper.applicationContext = applicationContext;
     }
 
     /**
@@ -30,4 +30,14 @@ public class SpringContextHolder implements ApplicationContextAware {
         return applicationContext.getBean(requiredType);
     }
 
+    /**
+     * 获取实例
+     *
+     * @param beanName
+     * @param <T>
+     * @return
+     */
+    public static <T> T getBean(String beanName, Class<T> tClass) {
+        return applicationContext.getBean(beanName, tClass);
+    }
 }
