@@ -19,7 +19,7 @@ spring:
     slave:
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://192.168.6.137:3306/activiti_01?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://192.168.6.136:3306/activiti_01?useUnicode=true&characterEncoding=UTF-8
       username: root
       password: Root!123
   activiti:

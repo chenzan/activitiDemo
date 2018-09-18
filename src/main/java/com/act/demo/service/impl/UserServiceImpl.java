@@ -3,7 +3,9 @@ package com.act.demo.service.impl;
 import com.act.demo.common.ConstantValue;
 import com.act.demo.common.SessionContext;
 import com.act.demo.domain.SysUser;
+import com.act.demo.domain.SysUserRole;
 import com.act.demo.mapper.SysUserMapper;
+import com.act.demo.service.IUserRoleService;
 import com.act.demo.service.IUserService;
 import com.act.demo.support.BaseService;
 import com.act.demo.support.ResponseResult;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpSession;
 public class UserServiceImpl extends BaseService<SysUser, SysUserMapper> implements IUserService {
     @Autowired
     SessionContext sessionContext;
+    @Autowired
+    IUserRoleService userRoleService;
 
     public SysUser selectByNamePwd(String username, String password) {
         return mMapper.selectByNamePwd(username, password);
@@ -37,6 +41,14 @@ public class UserServiceImpl extends BaseService<SysUser, SysUserMapper> impleme
     public void executeLoginOut(HttpSession session) {
         session.removeAttribute(ConstantValue.CURRENT_USER);
         session.invalidate();
+    }
+
+    @Override
+    public SysUser selectByRole(int roleDirector) {
+        SysUserRole sysUserRole = userRoleService.selectByRoleId(roleDirector);
+        Integer userId = sysUserRole.getUserId();
+        SysUser sysUser = selectByUserId(userId);
+        return sysUser;
     }
 
     @Override

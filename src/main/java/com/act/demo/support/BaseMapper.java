@@ -7,7 +7,7 @@ public interface BaseMapper<T> {
 
     int insertSelective(T t);
 
-    T selectByPrimaryKey(T id);
+    T selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(T t);
 
