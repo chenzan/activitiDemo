@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link th:replace="/commons/common_css :: common_css">
+</head>
+<body>
+<div class="modal-header">
+    <h4 class="modal-title">请假记录</h4>
+</div>
+<div>
+    <table class="table table-bordered">
+        <tr>
+            <th>id</th>
+            <th>请假原因</th>
+            <th>天数</th>
+            <th>操作</th>
+        </tr>
+        <tr th:each="leave,lStat : ${leaves}">
+            <td th:text="${leave.id}"></td>
+            <td th:text="${leave.leaveReason}"></td>
+            <td th:text="${leave.leaveDay}"></td>
+            <td>
+                <a data-toggle="modal" th:onclick="'leaveInfo('+${leave.id}+')'"
+                   data-target="#myModal">查看</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="/commons/common_js :: common_js"></script>
+<script>
+    $("#myModal").on("hidden.bs.modal", function () {
+        $(".modal-body").removeChild($("#formModel"));
+        $(".modal-body").removeChild($("#tableModel"));
+    });
+
+    function leaveInfo(leaveId) {
+        ajaxUtil.get("/leave/leaveLog?leaveId=" + leaveId, function (result, data) {
+            var formatData = eval('data');
+            var objectData = formatData.data;
+            var html = "<form id='formModel' th:action=\"@{/leave/approval}\" class=\"form-horizontal parsley-form\">\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label class=\"col-sm-1 control-label\">请假人</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input class=\"form-control\" readonly name=\"username\" value=" + objectData.sysUser.username + "><br/>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label readonly class=\"col-sm-1 control-label\">天数</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input readonly class=\"form-control\" min=\"0\" type=\"number\" name=\"day\" value=" + objectData.sysLeave.leaveDay + ">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label readonly class=\"col-sm-1 control-label\">时间</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input readonly class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveStartTime + ">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"form-group\">\n" +
+                "            <label readonly class=\"col-sm-1 control-label\">备注</label>\n" +
+                "            <div class=\"col-sm-8\">\n" +
+                "                <input readonly class=\"form-control\" name=\"remark\" value=" + objectData.sysLeave.leaveReason + ">\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </form>\n" +
+                "    <table id='tableModel' class=\"table table-bordered\">\n" +
+                "        <caption>历史批注</caption>\n" +
+                "        <tr>" +
+                "            <th>处理人</th>\n" +
+                "            <th>意见</th>\n" +
+                "            <th>处理时间</th>\n" +
+                "        </tr>";
+            for (var i = 0; i < objectData.comments.length; i++) {
+                var hisComment = objectData.comments[i];
+                html += "<tr>";
+                html += "<td>" + hisComment.userId + "</td>\n";
+                html += "<td>" + hisComment.fullMessage + "</td>\n";
+                html += "<td>" + hisComment.time + "</td>\n";
+                html += "</tr>";
+            }
+            html += "</table>";
+            $(".modal-body").append(html);
+            $('#myModal').modal('show')
+        });
+    }
+</script>
+</body>
+</html>

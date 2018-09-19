@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>mybatisGenerater</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>mybatisGenerator</name>
     <url>http://maven.apache.org</url>
