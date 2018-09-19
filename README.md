@@ -23,7 +23,7 @@ actdemo
 spring:
     activiti:
         async-executor-activate: false
-        process-definition-location-prefix: classpath:/processes/*/ #spring自动部署activiti是的读取目录
+        process-definition-location-prefix: classpath:/processes/*/ #spring自动部署activiti读取的目录
         check-process-definitions: true #是否检查上面配置的目录，自动部署需要为true但必须保证目录中有正确的bpmn文件
 ```
 * 此配置对应org.activiti.spring.boot.ActivitiProperties配置类，
@@ -45,7 +45,7 @@ spring:
 * 找到idea安装目录bin目录下，idea.exe.vmoptions或者idea64.exe.vmoptions(64位)
 用编辑器打开，在文件末尾添加 -Dfile.encoding=UTF-8 ，然后重启idea，再打开流程图就会发现中文已经可以正常显示了。
 * 此时spring自动部署的流程图中文仍然显示乱码，需要在processEngineConfiguration添加中文支持等。
-* 本项目通过一下代码获取流程图片避免显示乱码
+* 本项目通过以下代码获取流程图片避免显示乱码
 ```
 ProcessDiagramGenerator processDiagramGenerator = processEngine
                                                                .getProcessEngineConfiguration()
