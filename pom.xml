@@ -12,7 +12,7 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>actDemo</name>
+    <name>activitiDemo</name>
     <description>Demo project for Spring Boot</description>
     <parent>
         <groupId>org.springframework.boot</groupId>

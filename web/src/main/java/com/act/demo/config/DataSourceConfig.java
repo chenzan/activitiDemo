@@ -22,6 +22,7 @@ public class DataSourceConfig {
     @Bean(name = MASTER_DATASOURCE_NAME)
     @ConfigurationProperties("spring.datasource.master")
     public DataSource masterDataSource() {
+
         return DataSourceBuilder.create().type(masterDataSourceType).build();
     }
 
