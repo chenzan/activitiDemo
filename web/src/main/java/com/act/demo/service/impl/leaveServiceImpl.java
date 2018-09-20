@@ -56,7 +56,6 @@ public class leaveServiceImpl extends BaseService<SysLeave, SysLeaveMapper> impl
         return mMapper.selectAll(userId);
     }
 
-    @Log(name = "ceshj", content = "sssss",target = Log.Target.CONSOLE)
     @Override
     public List<SysLeave> selectByUserId(int userId) {
         return mMapper.selectByUserId(userId);
